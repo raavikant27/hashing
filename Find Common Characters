@@ -1,0 +1,43 @@
+class Solution {
+public:
+    
+
+    vector<string> commonChars(vector<string> &words)
+{
+    unordered_map<char, int> min_frequency;
+    vector<string> answer;
+    // Let us fill the min_freq to maximum (say 1000) first
+    for (char ch = 'a'; ch <= 'z'; ch++)
+    {
+        min_frequency[ch] = 1000;
+    }
+    // Now let us fill freq map for each word in the vector words
+    for (auto word : words)
+    {
+        unordered_map<char, int> frequency;
+        // Stoing freq for each character of each word
+        for (auto ch : word)
+        {
+            frequency[ch]++;
+        }
+        // Changing the min_freq map before going to the next word
+        for (char ch = 'a'; ch <= 'z'; ch++)
+        {
+            min_frequency[ch] = min(min_frequency[ch], frequency[ch]);
+        }
+    }
+    // storing all characters with freq>0 to output vector
+    for (char ch = 'a'; ch <= 'z'; ch++)
+    {
+        while (min_frequency[ch] > 0)
+        {
+            // our output is of form ["e","l","l"] means each letter is stored as a string inside the vector
+            // so we use a constructor string(count,character)
+            answer.push_back(string(1, ch));
+            // Decrease the frequency after storing in the output
+            min_frequency[ch]--;
+        }
+    }
+    return answer;
+}
+};
